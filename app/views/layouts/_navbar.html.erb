@@ -1,0 +1,11 @@
+<% if user_signed_in? %>
+  <span>Signed in as: <%= current_user.email %> (<%= current_user.role %>)</span>
+
+  <% if current_user.admin? %>
+    <%= link_to "Admin Dashboard", admin_dashboard_path, class: "btn btn--dark" %>
+  <% end %>
+
+  <%= button_to "Sign out", destroy_user_session_path, method: :delete %>
+<% else %>
+  <%= link_to "Sign in", new_user_session_path %>
+<% end %>
