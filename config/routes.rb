@@ -14,6 +14,17 @@ Rails.application.routes.draw do
   get "/register", to: "home_page#register"
   post "/register", to: "home_page#create_user"
 
+  get "/profile/edit", to: "users#edit_profile", as: :edit_profile
+  patch "/profile/update", to: "users#update_profile", as: :update_profile
+  get  "/profile/password",        to: "users#edit_password",   as: :edit_password
+  patch "/profile/password/update", to: "users#update_password", as: :update_password
+
+
+  namespace :admin do
+  get "dashboard", to: "dashboard#index"
+  end
+
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

@@ -1,4 +1,19 @@
-<div>
-  <h1 class="font-bold text-4xl">Admin::Dashboard#index</h1>
-  <p>Find me in app/views/admin/dashboard/index.html.erb</p>
-</div>
+<h1 class="text-3xl font-bold mb-6">Admin Dashboard</h1>
+
+<table class="min-w-full bg-white border">
+  <tr class="bg-gray-100">
+    <th class="p-2 border">ID</th>
+    <th class="p-2 border">Username</th>
+    <th class="p-2 border">Email</th>
+    <th class="p-2 border">Role</th>
+  </tr>
+
+  <% @users.each do |user| %>
+    <tr>
+      <td class="p-2 border"><%= user.id %></td>
+      <td class="p-2 border"><%= user.username %></td>
+      <td class="p-2 border"><%= user.email %></td>
+      <td class="p-2 border"><%= user.role %></td>
+    </tr>
+  <% end %>
+</table>
