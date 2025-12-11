@@ -24,9 +24,10 @@
   </head>
 
   <body>
-    <main class="container mx-auto mt-28 px-5 flex">
+    <main class="container mx-auto mt-28 px-5 flex flex-col items-center">
       <%= yield %>
     </main>
+
 
     <% flash.each do |key, message| %>
       <div class="flash <%= key %>"><%= message %></div>

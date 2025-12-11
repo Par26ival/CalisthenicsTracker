@@ -1,0 +1,22 @@
+<h1 class="text-3xl font-bold mb-6">Login</h1>
+
+<%= form_with url: user_session_path, scope: :user do |f| %>
+
+  <div class="mb-4">
+    <%= f.label :username %><br>
+    <%= f.text_field :username, class: "border p-2 rounded w-full", required: true %>
+  </div>
+
+  <div class="mb-4">
+    <%= f.label :email %><br>
+    <%= f.email_field :email, class: "border p-2 rounded w-full", required: true %>
+  </div>
+
+  <div class="mb-4">
+    <%= f.label :password %><br>
+    <%= f.password_field :password, class: "border p-2 rounded w-full", required: true %>
+  </div>
+
+  <%= f.submit "Log In", class: "bg-blue-600 text-white py-2 px-4 rounded" %>
+
+<% end %>

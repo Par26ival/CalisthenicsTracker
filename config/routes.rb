@@ -3,9 +3,17 @@ Rails.application.routes.draw do
     get "dashboard", to: "dashboard#index"
   end
 
-  devise_for :users
+  devise_for :users, controllers: {
+  registrations: "users/registrations",
+  sessions: "users/sessions"
+  }
+
   get "home_page/index"
   get "home/index"
+  get "/login", to: "home_page#login"
+  get "/register", to: "home_page#register"
+  post "/register", to: "home_page#create_user"
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
