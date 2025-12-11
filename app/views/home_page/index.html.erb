@@ -3,18 +3,45 @@
 
 <% if user_signed_in? %>
 
-  <p class="mb-4 text-lg">
-    Logged in as <strong><%= current_user.username %></strong>
-    (<%= current_user.role %>)
-  </p>
+  <!-- TOP BAR -->
+  <div class="w-full flex justify-between items-center mb-10">
 
-  <%= button_to "Logout",
-                destroy_user_session_path,
-                method: :delete,
-                class: "bg-red-600 text-white px-4 py-2 rounded" %>
+    <!-- Logged in as -->
+    <div class="text-xl font-semibold">
+      You are logged in as <strong><%= current_user.username %></strong>
+    </div>
+
+    <!-- Account icon -->
+    <%= link_to "#", class: "w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center hover:bg-gray-400" do %>
+      <span class="text-sm">👤</span>
+    <% end %>
+  </div>
+
+  <!-- MAIN CONTENT GRID -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-10 w-full">
+
+    <!-- FOR YOU PAGE AREA -->
+    <div class="col-span-2 bg-white shadow-lg rounded-xl p-6 min-h-[400px]">
+      <h2 class="text-2xl font-bold mb-4">For You</h2>
+      <p class="text-gray-600">Posts from your friends will appear here later.</p>
+    </div>
+
+    <!-- ADD SKILL / UPLOAD AREA -->
+    <div class="bg-white shadow-lg rounded-xl p-6 min-h-[400px]">
+      <h2 class="text-2xl font-bold mb-4">Add Skill / Upload</h2>
+
+      <p class="text-gray-600 mb-4">
+        This will later allow users to upload photos/videos of their skills.
+      </p>
+
+      <%= link_to "Add Skill",
+                  "#",
+                  class: "block bg-blue-600 text-white py-2 px-4 rounded text-center hover:bg-blue-700" %>
+    </div>
+
+  </div>
 
 <% else %>
-
   <div class="flex gap-6">
     <%= link_to "Login",
                 login_path,
@@ -25,4 +52,5 @@
                 class: "bg-green-600 text-white px-6 py-2 rounded text-xl" %>
   </div>
 
+  <%= render "logged_out_home" if lookup_context.exists?("logged_out_home", "home_page") %>
 <% end %>
