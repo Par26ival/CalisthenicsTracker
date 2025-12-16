@@ -1,66 +1,70 @@
-<h1 class="text-3xl font-bold mb-6">Friends & Invitations</h1>
+<h1 class="text-3xl font-bold mb-8 text-center">Friends</h1>
 
-<!-- ACCEPTED FRIENDS -->
-<section class="mb-8">
-  <h2 class="text-2xl font-semibold mb-3">Friends</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-  <% if @friends.any? %>
-    <ul class="list-disc pl-6">
-      <% @friends.each do |friend| %>
-        <li>
-          <strong><%= friend.username %></strong>
-          (<%= friend.email %>)
-        </li>
-      <% end %>
-    </ul>
-  <% else %>
-    <p class="text-gray-500">You have no friends yet.</p>
-  <% end %>
-</section>
+  <!-- FRIENDS -->
+  <div class="bg-white rounded-xl shadow p-6">
+    <h2 class="text-xl font-semibold mb-4">Friends</h2>
 
-<!-- SENT INVITATIONS -->
-<section class="mb-8">
-  <h2 class="text-2xl font-semibold mb-3">Sent Friend Requests</h2>
-
-  <% if @sent_requests.any? %>
-    <ul class="list-disc pl-6">
-      <% @sent_requests.each do |req| %>
-        <li>
-          Sent to <strong><%= req.receiver.username %></strong>
-          <span class="text-gray-500">(pending)</span>
-        </li>
-      <% end %>
-    </ul>
-  <% else %>
-    <p class="text-gray-500">No outgoing friend requests.</p>
-  <% end %>
-</section>
-
-<!-- RECEIVED INVITATIONS -->
-<section>
-  <h2 class="text-2xl font-semibold mb-3">Received Friend Requests</h2>
-
-  <% if @received_requests.any? %>
-    <% @received_requests.each do |req| %>
-      <div class="flex items-center justify-between bg-white shadow p-4 rounded mb-3">
-        <div>
-          <strong><%= req.requester.username %></strong> wants to be your friend
-        </div>
-
-        <div class="flex gap-2">
-          <%= button_to "Accept",
-                        accept_friendship_path(req),
-                        method: :patch,
-                        class: "bg-green-600 text-white px-3 py-1 rounded" %>
-
-          <%= button_to "Decline",
-                        decline_friendship_path(req),
-                        method: :delete,
-                        class: "bg-red-600 text-white px-3 py-1 rounded" %>
-        </div>
-      </div>
+    <% if @friends.any? %>
+      <ul class="space-y-2">
+        <% @friends.each do |friend| %>
+          <li class="p-2 bg-gray-100 rounded">
+            <strong><%= friend.username %></strong>
+            <div class="text-sm text-gray-600"><%= friend.email %></div>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="text-gray-500">No friends yet.</p>
     <% end %>
-  <% else %>
-    <p class="text-gray-500">No incoming friend requests.</p>
-  <% end %>
-</section>
+  </div>
+
+  <!-- SENT INVITATIONS -->
+  <div class="bg-white rounded-xl shadow p-6">
+    <h2 class="text-xl font-semibold mb-4">Sent Requests</h2>
+
+    <% if @sent_requests.any? %>
+      <ul class="space-y-2">
+        <% @sent_requests.each do |req| %>
+          <li class="p-2 bg-gray-100 rounded">
+            <strong><%= req.receiver.username %></strong>
+            <span class="text-sm text-gray-500">(pending)</span>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="text-gray-500">No outgoing requests.</p>
+    <% end %>
+  </div>
+
+  <!-- RECEIVED INVITATIONS -->
+  <div class="bg-white rounded-xl shadow p-6">
+    <h2 class="text-xl font-semibold mb-4">Incoming Requests</h2>
+
+    <% if @received_requests.any? %>
+      <% @received_requests.each do |req| %>
+        <div class="p-3 bg-gray-100 rounded mb-3 flex justify-between items-center">
+          <div>
+            <strong><%= req.requester.username %></strong>
+          </div>
+
+          <div class="flex gap-2">
+            <%= button_to "✓",
+                          accept_friendship_path(req),
+                          method: :patch,
+                          class: "bg-green-600 text-white px-3 py-1 rounded" %>
+
+            <%= button_to "✕",
+                          decline_friendship_path(req),
+                          method: :delete,
+                          class: "bg-red-600 text-white px-3 py-1 rounded" %>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <p class="text-gray-500">No incoming requests.</p>
+    <% end %>
+  </div>
+
+</div>
