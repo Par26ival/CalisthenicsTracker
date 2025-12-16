@@ -25,6 +25,47 @@
       <p class="text-gray-600">Posts from your friends will appear here later.</p>
     </div>
 
+    <!-- FIND FRIENDS PANEL -->
+    <div class="bg-white shadow-lg rounded-xl p-6 mt-6">
+      <h2 class="text-xl font-bold mb-4">Find Friends</h2>
+
+      <%= form_with url: users_path, method: :get, class: "flex gap-2 mb-4" do %>
+        <%= text_field_tag :query,
+              params[:query],
+              placeholder: "Search users by name or email",
+              class: "border p-2 rounded w-full" %>
+
+        <%= submit_tag "Search",
+              class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
+      <% end %>
+
+      <%= link_to "View all users →",
+                  users_path,
+                  class: "text-blue-600 hover:underline" %>
+    </div>
+
+    <div class="bg-white shadow-lg rounded-xl p-6 mt-6">
+      <h2 class="text-xl font-bold mb-4">People You May Know</h2>
+
+      <% User.where.not(id: current_user.id).limit(5).each do |user| %>
+
+        <% next if current_user.friends.include?(user) %>
+        <% next if current_user.pending_sent_invitations.any? { |f| f.receiver_id == user.id } %>
+
+        <div class="flex justify-between items-center mb-3">
+          <div>
+            <strong><%= user.username %></strong>
+          </div>
+
+          <%= button_to "Add Friend",
+                        friendships_path(receiver_id: user.id),
+                        method: :post,
+                        class: "bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700" %>
+        </div>
+
+      <% end %>
+    </div>
+
     <!-- ADD SKILL / UPLOAD AREA -->
     <div class="bg-white shadow-lg rounded-xl p-6 min-h-[400px]">
       <h2 class="text-2xl font-bold mb-4">Add Skill / Upload</h2>

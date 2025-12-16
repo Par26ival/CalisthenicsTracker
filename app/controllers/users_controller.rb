@@ -1,6 +1,18 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
 
+  def index
+    if params[:query].present?
+      @users = User.where(
+        "username LIKE :q OR email LIKE :q",
+        q: "%#{params[:query]}%"
+      )
+    else
+      @users = User.all
+    end
+  end
+
+
   def edit_profile
     @user = current_user
   end

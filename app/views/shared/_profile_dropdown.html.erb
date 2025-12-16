@@ -28,6 +28,10 @@
         class: "block px-2 py-1 hover:bg-gray-100 font-bold text-blue-600" %>
     <% end %>
 
+    <%= link_to "Friends",
+            friends_path,
+            class: "block px-2 py-1 hover:bg-gray-200" %>
+
     <%= button_to "Logout",
       destroy_user_session_path,
       method: :delete,

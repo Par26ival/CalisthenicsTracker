@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  get "friendships/create"
+  get "friendships/accept"
+  get "friendships/decline"
   namespace :admin do
     get "dashboard", to: "dashboard#index"
   end
@@ -21,8 +24,25 @@ Rails.application.routes.draw do
 
 
   namespace :admin do
-  get "dashboard", to: "dashboard#index"
+    get "dashboard", to: "dashboard#index"
   end
+
+  resources :users, only: [:index]
+
+
+  resources :friendships, only: [:create] do
+    member do
+      patch :accept
+      delete :decline
+    end
+  end
+
+  get "/friend_requests", to: "friendships#requests", as: :friend_requests
+  resources :users, only: [:index]
+
+  get "/friends", to: "friendships#friends", as: :friends
+
+
 
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

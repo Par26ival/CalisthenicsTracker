@@ -1,0 +1,31 @@
+<h1 class="text-3xl font-bold mb-6">Friend Requests</h1>
+
+<% if @requests.any? %>
+
+  <% @requests.each do |req| %>
+    <div class="flex justify-between items-center bg-white shadow p-4 rounded mb-3">
+
+      <div>
+        <strong><%= req.requester.username %></strong> wants to be your friend
+      </div>
+
+      <div class="flex gap-3">
+        <%= button_to "Accept",
+                      accept_friendship_path(req),
+                      method: :patch,
+                      class: "bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700" %>
+
+        <%= button_to "Decline",
+                      decline_friendship_path(req),
+                      method: :delete,
+                      class: "bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700" %>
+      </div>
+
+    </div>
+  <% end %>
+
+<% else %>
+
+  <p class="text-gray-600">You have no friend requests.</p>
+
+<% end %>

@@ -1,4 +1,5 @@
 User.create!(
+  username: "Admin",
   email: "admin@example.com",
   password: "admin1",
   password_confirmation: "admin1",
@@ -6,13 +7,15 @@ User.create!(
 )
 
 User.create!(
-  email: "john@example.com",
-  password: "123456",
-  password_confirmation: "123456",
+  username: "Pederakis Manafakis",
+  email: "pederakis@manafakis.com",
+  password: "SPYRALex67",
+  password_confirmation: "SPYRALex67",
   role: :trainee
 )
 
 User.create!(
+  username: "Maria",
   email: "maria@example.com",
   password: "password",
   password_confirmation: "password",

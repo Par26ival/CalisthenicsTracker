@@ -1,0 +1,50 @@
+<h1 class="text-3xl font-bold mb-6">Users</h1>
+
+<!-- SEARCH -->
+<%= form_with url: users_path, method: :get, class: "mb-6 flex gap-3" do %>
+  <%= text_field_tag :query, params[:query], placeholder: "Search users...",
+        class: "border p-2 rounded w-64" %>
+
+  <%= submit_tag "Search",
+        class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
+<% end %>
+
+<!-- USER LIST -->
+<div class="space-y-4">
+  <% @users.each do |user| %>
+
+    <% next if user == current_user %>
+
+    <div class="flex justify-between items-center bg-white shadow p-4 rounded">
+
+      <div>
+        <div class="text-lg font-semibold"><%= user.username %></div>
+        <div class="text-gray-600 text-sm"><%= user.email %></div>
+      </div>
+
+      <div>
+        <%= link_to "← Back to Home",
+            root_path,
+            class: "text-blue-600 hover:underline mb-4 inline-block" %>
+
+        <% if current_user.friends.include?(user) %>
+          <span class="text-green-600 font-semibold">Friends ✓</span>
+
+        <% elsif current_user.pending_sent_invitations.any? { |f| f.receiver_id == user.id } %>
+          <span class="text-gray-500">Request Sent</span>
+
+        <% elsif current_user.pending_received_invitations.any? { |f| f.requester_id == user.id } %>
+          <span class="text-gray-500">Requested You</span>
+
+        <% else %>
+          <%= button_to "Add Friend",
+                        friendships_path(receiver_id: user.id),
+                        method: :post,
+                        class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
+        <% end %>
+      </div>
+
+    </div>
+
+  <% end %>
+</div>
