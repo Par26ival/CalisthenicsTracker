@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   get "friendships/create"
   get "friendships/accept"
   get "friendships/decline"
+  
   namespace :admin do
     get "dashboard", to: "dashboard#index"
   end
@@ -19,7 +20,7 @@ Rails.application.routes.draw do
 
   get "/profile/edit", to: "users#edit_profile", as: :edit_profile
   patch "/profile/update", to: "users#update_profile", as: :update_profile
-  get  "/profile/password",        to: "users#edit_password",   as: :edit_password
+  get "/profile/password", to: "users#edit_password", as: :edit_password
   patch "/profile/password/update", to: "users#update_password", as: :update_password
 
 
@@ -29,7 +30,6 @@ Rails.application.routes.draw do
 
   resources :users, only: [:index]
 
-
   resources :friendships, only: [:create] do
     member do
       patch :accept
@@ -38,10 +38,12 @@ Rails.application.routes.draw do
   end
 
   get "/friend_requests", to: "friendships#requests", as: :friend_requests
-  resources :users, only: [:index]
 
   get "/friends", to: "friendships#friends", as: :friends
 
+  resources :posts, only: [:index, :new, :create, :show, :destroy] do
+    resources :comments, only: [:create, :destroy]
+  end
 
 
 

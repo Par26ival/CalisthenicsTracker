@@ -1,0 +1,11 @@
+<h1>Create Post</h1>
+
+<%= form_with model: @post do |f| %>
+  <div>
+    <%= f.text_area :content, rows: 5, placeholder: "What's on your mind?" %>
+  </div>
+
+  <div>
+    <%= f.submit "Post" %>
+  </div>
+<% end %>

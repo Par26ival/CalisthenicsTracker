@@ -4,11 +4,14 @@ class User < ApplicationRecord
          :rememberable,
          :validatable
 
+  has_many :posts, dependent: :destroy
+  has_many :comments, dependent: :destroy
+
   validates :username, presence: true
 
   enum role: { trainee: 0, admin: 1 }
 
-    #Friendships I sent
+  # Friendships I sent
   has_many :sent_friendships,
           class_name: "Friendship",
           foreign_key: "requester_id",

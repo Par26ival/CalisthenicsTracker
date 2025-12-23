@@ -1,0 +1,33 @@
+<h1>All Posts</h1>
+
+<%= link_to "New Post", new_post_path, class: "btn" %>
+
+<hr>
+
+<div id="posts">
+  <% @posts.each do |post| %>
+    <div class="post-card">
+      <strong><%= post.user.username %></strong>
+
+      <small class="block text-gray-500">
+        <%= time_ago_in_words(post.created_at) %> ago
+      </small>
+
+      <p class="mt-2">
+        <%= truncate(strip_tags(post.content), length: 200) %>
+      </p>
+
+      <div class="flex gap-4 mt-2">
+        <%= link_to "View", post_path(post), class: "text-blue-600" %>
+
+        <% if current_user.admin? || post.user == current_user %>
+          <%= button_to "Delete",
+                post_path(post),
+                method: :delete,
+                data: { confirm: "Are you sure?" },
+                class: "text-red-600" %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

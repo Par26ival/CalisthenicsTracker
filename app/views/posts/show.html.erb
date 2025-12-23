@@ -1,0 +1,60 @@
+<div class="w-full max-w-xl bg-white border rounded-lg p-6 shadow-sm mb-6">
+  <div class="flex justify-between text-sm text-gray-500 mb-4">
+    <strong class="text-gray-800"><%= @post.user.username %></strong>
+    <span><%= time_ago_in_words(@post.created_at) %> ago</span>
+  </div>
+
+  <p class="text-gray-800 whitespace-pre-line">
+    <%= @post.content %>
+  </p>
+</div>
+
+<h2 class="text-lg font-semibold mb-4">Comments</h2>
+
+<h2 class="text-lg font-semibold mb-4">Comments</h2>
+
+<div class="space-y-3 mb-6">
+  <% @post.comments.each do |comment| %>
+    <div class="bg-gray-50 border rounded p-3">
+      <div class="text-sm text-gray-600 mb-1 flex justify-between">
+        <span>
+          <strong><%= comment.user.username %></strong>
+          · <%= time_ago_in_words(comment.created_at) %> ago
+        </span>
+
+        <% if current_user.admin? || comment.user == current_user %>
+          <%= button_to "Delete",
+                post_comment_path(@post, comment),
+                method: :delete,
+                data: { confirm: "Delete this comment?" },
+                class: "text-red-600 text-sm" %>
+        <% end %>
+      </div>
+
+      <p class="whitespace-pre-line">
+        <%= comment.content %>
+      </p>
+    </div>
+  <% end %>
+</div>
+
+
+<%= form_with model: [@post, @comment], class: "w-full max-w-xl" do |f| %>
+  <div class="mb-3">
+    <%= f.text_area :content,
+        rows: 3,
+        placeholder: "Write a comment...",
+        class: "w-full border rounded p-2" %>
+  </div>
+
+  <%= f.submit "Comment",
+      class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
+<% end %>
+
+<% if current_user.admin? || @post.user == current_user %>
+  <%= button_to "Delete Post",
+        post_path(@post),
+        method: :delete,
+        data: { confirm: "Are you sure?" },
+        class: "bg-red-600 text-white px-4 py-2 rounded mb-4" %>
+<% end %>
