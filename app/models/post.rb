@@ -1,12 +1,18 @@
 class Post < ApplicationRecord
   belongs_to :user
   has_many :comments, dependent: :destroy
+  has_many :ratings, dependent: :destroy
 
   has_many_attached :media
 
   validates :content, presence: true, length: { maximum: 1000 }
 
   validate :media_type_and_size
+
+  def average_rating
+    return nil if ratings.empty?
+    ratings.average(:score).round(2)
+  end
 
   private
 

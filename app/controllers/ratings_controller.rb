@@ -1,0 +1,31 @@
+class RatingsController < ApplicationController
+  before_action :authenticate_user!
+  before_action :require_admin!
+  before_action :set_post
+
+  def create
+    @rating = @post.ratings.find_or_initialize_by(user: current_user)
+    @rating.assign_attributes(rating_params)
+
+    if @rating.save
+      redirect_to post_path(@post), notice: "Rating saved"
+    else
+      redirect_to post_path(@post), alert: @rating.errors.full_messages.first
+    end
+  end
+
+  private
+
+  def set_post
+    @post = Post.find(params[:post_id])
+  end
+
+  def rating_params
+    params.require(:rating).permit(:score, :comment)
+  end
+
+  def require_admin!
+    return if current_user.admin?
+    redirect_to posts_path, alert: "Only admins can rate posts"
+  end
+end

@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   get "friendships/create"
   get "friendships/accept"
   get "friendships/decline"
-  
+
   namespace :admin do
     get "dashboard", to: "dashboard#index"
   end
@@ -43,6 +43,7 @@ Rails.application.routes.draw do
 
   resources :posts, only: [:index, :new, :create, :show, :destroy] do
     resources :comments, only: [:create, :destroy]
+    resources :ratings, only: [:create]
   end
 
 

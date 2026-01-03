@@ -4,7 +4,9 @@ class PostsController < ApplicationController
   before_action :authorize_destroy!, only: [:destroy]
 
   def index
-    @posts = Post.includes(:user, :comments).order(created_at: :desc)
+    @posts = Post
+               .includes(:user, :comments, :ratings, media_attachments: :blob)
+               .order(created_at: :desc)
   end
 
   def new
