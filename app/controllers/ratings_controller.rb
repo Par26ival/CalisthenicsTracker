@@ -7,6 +7,13 @@ class RatingsController < ApplicationController
     @rating = @post.ratings.find_or_initialize_by(user: current_user)
     @rating.assign_attributes(rating_params)
 
+    if current_user.timed_out?
+      redirect_to post_path(@post),
+                  alert: "You are temporarily blocked from rating"
+      return
+    end
+
+
     if @rating.save
       redirect_to post_path(@post), notice: "Rating saved"
     else

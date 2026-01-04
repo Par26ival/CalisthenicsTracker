@@ -24,6 +24,12 @@ class PostsController < ApplicationController
   end
 
   def create
+    if current_user.timed_out?
+      redirect_to posts_path,
+                  alert: "You are temporarily blocked from posting"
+      return
+    end
+
     @post = current_user.posts.build(post_params)
 
     if @post.save

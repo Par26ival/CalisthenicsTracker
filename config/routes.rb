@@ -7,6 +7,14 @@ Rails.application.routes.draw do
 
   namespace :admin do
     get "dashboard", to: "dashboard#index"
+    resources :users, only: [:index] do
+      member do
+        patch :promote
+        patch :demote
+        patch :timeout
+        patch :clear_timeout
+      end
+    end
   end
 
   devise_for :users, controllers: {

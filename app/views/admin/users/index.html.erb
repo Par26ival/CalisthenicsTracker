@@ -1,0 +1,71 @@
+<div class="w-full max-w-4xl">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold">Admin Dashboard</h1>
+
+    <div class="flex gap-3">
+      <%= link_to "Users",
+            admin_users_path,
+            class: "px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700 font-medium" %>
+
+      <%= link_to "Skills",
+            skills_path,
+            class: "px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 font-medium" %>
+
+      <%= link_to "Posts",
+            posts_path,
+            class: "px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 font-medium" %>
+    </div>
+  </div>
+
+  <div class="space-y-3">
+    <% @users.each do |u| %>
+      <div class="bg-white border rounded p-4">
+        <div class="flex justify-between items-start">
+          <div>
+            <div class="font-semibold"><%= u.username %></div>
+            <div class="text-sm text-gray-600">
+              Role: <%= u.role %>
+              <% if u.timed_out? %>
+                · Timed out until <%= u.timeout_until.strftime("%H:%M %d %b") %>
+              <% end %>
+            </div>
+          </div>
+
+          <% if u != current_user %>
+            <div class="flex flex-wrap gap-2">
+              <% if u.trainee? %>
+                <%= button_to "Promote",
+                      promote_admin_user_path(u),
+                      method: :patch,
+                      class: "px-3 py-1 rounded bg-blue-600 text-white text-sm" %>
+              <% else %>
+                <%= button_to "Demote",
+                      demote_admin_user_path(u),
+                      method: :patch,
+                      class: "px-3 py-1 rounded bg-gray-200 text-sm" %>
+              <% end %>
+
+              <%= form_with url: timeout_admin_user_path(u),
+                            method: :patch,
+                            local: true do |f| %>
+                <div class="flex gap-2 items-center">
+                  <%= f.number_field :minutes,
+                        value: 10,
+                        min: 1,
+                        class: "border rounded p-1 w-20 text-sm" %>
+                  <%= f.submit "Timeout",
+                        class: "px-3 py-1 rounded bg-yellow-500 text-white text-sm" %>
+                </div>
+              <% end %>
+
+              <%= button_to "Clear timeout",
+                    clear_timeout_admin_user_path(u),
+                    method: :patch,
+                    class: "px-3 py-1 rounded bg-green-600 text-white text-sm" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

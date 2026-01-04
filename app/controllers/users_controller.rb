@@ -12,7 +12,6 @@ class UsersController < ApplicationController
     end
   end
 
-
   def edit_profile
     @user = current_user
   end
@@ -29,12 +28,6 @@ class UsersController < ApplicationController
     end
   end
 
-  private
-
-  def profile_params
-    params.require(:user).permit(:username)
-  end
-
   def edit_password
     @user = current_user
   end
@@ -43,7 +36,7 @@ class UsersController < ApplicationController
     @user = current_user
 
     if @user.update_with_password(password_params)
-      bypass_sign_in(@user) # Keep the user logged in
+      bypass_sign_in(@user)
       flash[:notice] = "Password updated successfully."
       redirect_to root_path
     else
@@ -54,7 +47,33 @@ class UsersController < ApplicationController
 
   private
 
+  # ------------------------------------------------------------------
+  # PHASE 3 NOTE:
+  #
+  # We intentionally DO NOT restrict profile edits or password changes
+  # for timed-out users.
+  #
+  # If you ever want to enable this restriction, add:
+  #
+  # before_action :block_timed_out_users, only: [:update_profile, :update_password]
+  #
+  # and uncomment the method below.
+  # ------------------------------------------------------------------
+  #
+  # def block_timed_out_users
+  #   if current_user.timed_out?
+  #     redirect_to root_path,
+  #                 alert: "Your account is temporarily restricted until #{current_user.timeout_until.strftime('%H:%M %d %b')}"
+  #   end
+  # end
+  # ------------------------------------------------------------------
+
+  def profile_params
+    params.require(:user).permit(:username)
+  end
+
   def password_params
-    params.require(:user).permit(:current_password, :password, :password_confirmation)
+    params.require(:user)
+          .permit(:current_password, :password, :password_confirmation)
   end
 end

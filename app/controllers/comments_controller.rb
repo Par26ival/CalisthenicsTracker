@@ -5,15 +5,24 @@ class CommentsController < ApplicationController
   before_action :authorize_destroy!, only: [:destroy]
 
   def create
-    @comment = @post.comments.build(comment_params)
-    @comment.user = current_user
+  @post = Post.find(params[:post_id])
 
-    if @comment.save
-      redirect_to post_path(@post), notice: "Comment added"
-    else
-      redirect_to post_path(@post), alert: "Comment cannot be empty"
-    end
+  if current_user.timed_out?
+    redirect_to post_path(@post),
+                alert: "You are temporarily blocked from commenting"
+    return
   end
+
+  @comment = @post.comments.build(comment_params)
+  @comment.user = current_user
+
+  if @comment.save
+    redirect_to post_path(@post), notice: "Comment added"
+  else
+    redirect_to post_path(@post), alert: "Comment cannot be empty"
+  end
+end
+
 
   def destroy
     @comment.destroy
