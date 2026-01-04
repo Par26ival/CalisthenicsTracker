@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get "skills/index"
+  get "skills/show"
   get "friendships/create"
   get "friendships/accept"
   get "friendships/decline"

@@ -1,0 +1,53 @@
+<div class="w-full max-w-xl">
+  <h1 class="text-xl font-semibold mb-2">
+    <%= @skill.name %>
+  </h1>
+
+  <% if @skill.weighted_score %>
+    <p class="text-yellow-600 font-semibold mb-4">
+      ⭐ Weighted score: <%= @skill.weighted_score %> / 5
+      (<%= @skill.attempts_count %> attempts)
+    </p>
+  <% else %>
+    <p class="text-gray-500 italic mb-4">
+      No rated attempts yet
+    </p>
+  <% end %>
+
+  <h2 class="text-lg font-semibold mb-3">Attempts</h2>
+
+  <% @posts.each do |post| %>
+    <div class="bg-white border rounded p-4 mb-4 shadow-sm">
+      <div class="text-sm text-gray-500 mb-2">
+        <strong><%= post.user.username %></strong>
+        · <%= time_ago_in_words(post.created_at) %> ago
+      </div>
+
+      <p class="mb-2">
+        <%= truncate(strip_tags(post.content), length: 200) %>
+      </p>
+
+      <% if post.media.attached? %>
+        <div class="space-y-2">
+          <% post.media.each do |file| %>
+            <% if file.image? %>
+              <%= image_tag file, class: "max-w-full rounded" %>
+            <% elsif file.video? %>
+              <%= video_tag file, controls: true, class: "max-w-full rounded" %>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+
+      <% if post.average_rating %>
+        <p class="text-sm text-yellow-700 mt-2">
+          ⭐ Post rating: <%= post.average_rating %> / 5
+        </p>
+      <% end %>
+
+      <%= link_to "View post",
+            post_path(post),
+            class: "inline-block mt-2 text-sm text-indigo-600 hover:underline" %>
+    </div>
+  <% end %>
+</div>
