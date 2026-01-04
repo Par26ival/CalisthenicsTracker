@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_01_03_145354) do
+ActiveRecord::Schema[7.2].define(version: 2026_01_04_090222) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -58,6 +58,16 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_03_145354) do
     t.index ["requester_id", "receiver_id"], name: "index_friendships_on_requester_id_and_receiver_id", unique: true
   end
 
+  create_table "post_skills", force: :cascade do |t|
+    t.integer "post_id", null: false
+    t.integer "skill_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id", "skill_id"], name: "index_post_skills_on_post_id_and_skill_id", unique: true
+    t.index ["post_id"], name: "index_post_skills_on_post_id"
+    t.index ["skill_id"], name: "index_post_skills_on_skill_id"
+  end
+
   create_table "posts", force: :cascade do |t|
     t.integer "user_id", null: false
     t.text "content"
@@ -75,6 +85,13 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_03_145354) do
     t.datetime "updated_at", null: false
     t.index ["post_id"], name: "index_ratings_on_post_id"
     t.index ["user_id"], name: "index_ratings_on_user_id"
+  end
+
+  create_table "skills", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -95,6 +112,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_03_145354) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users"
+  add_foreign_key "post_skills", "posts"
+  add_foreign_key "post_skills", "skills"
   add_foreign_key "posts", "users"
   add_foreign_key "ratings", "posts"
   add_foreign_key "ratings", "users"

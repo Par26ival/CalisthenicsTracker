@@ -1,23 +1,36 @@
-User.create!(
-  username: "Admin",
-  email: "admin@example.com",
-  password: "admin1",
-  password_confirmation: "admin1",
-  role: :admin
-)
 
-User.create!(
-  username: "Pederakis Manafakis",
-  email: "pederakis@manafakis.com",
-  password: "SPYRALex67",
-  password_confirmation: "SPYRALex67",
-  role: :trainee
-)
+User.find_or_create_by!(email: "admin@example.com") do |u|
+  u.username = "Admin"
+  u.password = "admin1"
+  u.password_confirmation = "admin1"
+  u.role = :admin
+end
 
-User.create!(
-  username: "Maria",
-  email: "maria@example.com",
-  password: "password",
-  password_confirmation: "password",
-  role: :trainee
-)
+User.find_or_create_by!(email: "pederakis@manafakis.com") do |u|
+  u.username = "Pederakis Manafakis"
+  u.password = "SPYRALex67"
+  u.password_confirmation = "SPYRALex67"
+  u.role = :trainee
+end
+
+User.find_or_create_by!(email: "maria@example.com") do |u|
+  u.username = "Maria"
+  u.password = "password"
+  u.password_confirmation = "password"
+  u.role = :trainee
+end
+
+skills = [
+  "Push-up",
+  "Pull-up",
+  "Handstand",
+  "Planche",
+  "Front Lever",
+  "Back Lever",
+  "Muscle-up",
+  "Dip"
+]
+
+skills.each do |name|
+  Skill.find_or_create_by!(name: name)
+end

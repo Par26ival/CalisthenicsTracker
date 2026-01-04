@@ -1,23 +1,43 @@
-<%= form_with model: @post do |f| %>
-  <div class="mb-4">
-    <%= f.text_area :content,
-        rows: 5,
-        placeholder: "What's on your mind?",
-        class: "w-full border rounded p-2" %>
-  </div>
+<div class="w-full max-w-xl bg-white border rounded-lg p-6 shadow-sm">
+  <h1 class="text-xl font-semibold mb-4">New Post</h1>
 
-  <div class="mb-4">
-    <%= f.file_field :media,
-        multiple: true,
-        accept: "image/*,video/*",
-        class: "block w-full" %>
-  </div>
+  <%= form_with model: @post do |f| %>
+    <div class="mb-4">
+      <%= f.label :skill_ids, "Skills shown in this post",
+            class: "block text-sm font-medium mb-1" %>
 
-  <%= f.submit "Post",
-      class: "bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 font-semibold" %>
+      <%= f.collection_select :skill_ids,
+            @skills,
+            :id,
+            :name,
+            {},
+            { multiple: true, class: "w-full border rounded p-2 h-40" } %>
 
-  <%= link_to "Cancel",
-      posts_path,
-      class: "ml-4 text-gray-600 hover:underline" %>
+      <p class="text-sm text-gray-500 mt-1">
+        Hold Ctrl (or Cmd) to select multiple skills.
+      </p>
+    </div>
 
-<% end %>
+    <div class="mb-4">
+      <%= f.text_area :content,
+            rows: 5,
+            placeholder: "Notes about the attempt...",
+            class: "w-full border rounded p-2" %>
+    </div>
+
+    <div class="mb-4">
+      <%= f.file_field :media,
+            multiple: true,
+            accept: "image/*,video/*",
+            class: "block w-full" %>
+    </div>
+
+    <div class="flex gap-3">
+      <%= f.submit "Post",
+            class: "bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 font-semibold" %>
+      <%= link_to "Back",
+            posts_path,
+            class: "px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 font-medium" %>
+    </div>
+  <% end %>
+</div>

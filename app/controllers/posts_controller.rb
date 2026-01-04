@@ -4,13 +4,23 @@ class PostsController < ApplicationController
   before_action :authorize_destroy!, only: [:destroy]
 
   def index
-    @posts = Post
-               .includes(:user, :comments, :ratings, media_attachments: :blob)
-               .order(created_at: :desc)
+    @skills = Skill.order(:name)
+
+    base = Post
+             .includes(:user, :comments, :ratings, :skills, media_attachments: :blob)
+             .order(created_at: :desc)
+
+    if params[:skill_id].present?
+      @selected_skill = Skill.find(params[:skill_id])
+      @posts = base.joins(:skills).where(skills: { id: @selected_skill.id }).distinct
+    else
+      @posts = base
+    end
   end
 
   def new
     @post = Post.new
+    @skills = Skill.order(:name)
   end
 
   def create
@@ -19,6 +29,7 @@ class PostsController < ApplicationController
     if @post.save
       redirect_to posts_path, notice: "Post created"
     else
+      @skills = Skill.order(:name)
       render :new, status: :unprocessable_entity
     end
   end
@@ -35,16 +46,16 @@ class PostsController < ApplicationController
   private
 
   def set_post
-    @post = Post.find(params[:id])
+    @post = Post.includes(:skills, :ratings, :comments, media_attachments: :blob)
+                .find(params[:id])
   end
 
   def authorize_destroy!
     return if current_user.admin? || @post.user == current_user
-
     redirect_to posts_path, alert: "You are not allowed to delete this post"
   end
 
   def post_params
-    params.require(:post).permit(:content, media: [])
+    params.require(:post).permit(:content, media: [], skill_ids: [])
   end
 end
