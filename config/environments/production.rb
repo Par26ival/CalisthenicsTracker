@@ -23,6 +23,12 @@ Rails.application.configure do
 
   config.active_storage.service = :cloudflare_r2
 
+  config.active_storage.analyzers = []
+
+
+  # Delete files synchronously (prevents PurgeJob)
+  config.active_storage.queues.purge = nil
+
   # ============================
   # SSL / Security
   # ============================
