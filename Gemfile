@@ -76,5 +76,5 @@ group :production do
   gem "aws-sdk-s3", "~> 1"
 end
 
-gem "sidekiq", "~> 8.0"
+gem "sidekiq", "~> 8.1"
 gem "devise", "~> 4.9"
