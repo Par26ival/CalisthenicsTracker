@@ -5,4 +5,9 @@ class ApplicationController < ActionController::Base
   # Changes to the importmap will invalidate the etag for HTML responses
   stale_when_importmap_changes
   include AuthorizationHelpers
+
+  def after_sign_out_path_for(resource_or_scope)
+    flash[:alert] = "Your session expired due to inactivity."
+    root_path
+  end
 end
