@@ -12,7 +12,7 @@ class User < ApplicationRecord
 
   validates :username, presence: true
 
-  enum role: { trainee: 0, admin: 1 }
+  enum :role, { trainee: 0, admin: 1 }
 
   has_many :sent_friendships,
           class_name: "Friendship",

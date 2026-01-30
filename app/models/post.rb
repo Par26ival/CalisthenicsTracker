@@ -27,7 +27,7 @@ class Post < ApplicationRecord
 
   def media_type_and_size
     media.each do |file|
-      if !file.content_type.in?(%w[image/jpeg image/png image/webp video/mp4 video/webm])
+      if !file.content_type.in?(%w[ image/jpeg image/png image/webp video/mp4 video/webm ])
         errors.add(:media, "must be an image or video")
       elsif file.byte_size > 50.megabytes
         errors.add(:media, "is too large (max 50MB)")

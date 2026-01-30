@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
 
   def authenticate_user!
     return if user_signed_in?
-    
+
     store_location_for(:user, request.fullpath) if request.get?
     redirect_to login_path, alert: "Please sign in to continue."
   end
