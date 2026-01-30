@@ -11,4 +11,11 @@ class ApplicationController < ActionController::Base
     reset_session
     root_path
   end
+
+  def authenticate_user!
+    return if user_signed_in?
+    
+    store_location_for(:user, request.fullpath) if request.get?
+    redirect_to login_path, alert: "Please sign in to continue."
+  end
 end
